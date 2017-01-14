@@ -1,0 +1,29 @@
+{
+    "name" : "makinacorpus/goat-bundle",
+    "type": "library",
+    "description": "Goat database connector bundle",
+    "keywords": ["orm", "postgresql", "mysql", "database", "symfony", "pdo"],
+    "homepage": "http://github.com/makinacorpus/goat-bundle",
+    "license": "GPL-2",
+    "authors": [
+        {
+            "name" : "Pierre RINEAU",
+            "email" : "pierre.rineau@processus.org"
+        }
+    ],
+    "autoload" : {
+        "exclude-from-classmap": ["/Tests/"],
+        "psr-4" : {
+            "GoatBundle\\" : "."
+        }
+    },
+    "require" : {
+        "makinacorpus/goat" : "*",
+        "php" : ">=7.0",
+        "symfony/symfony": "^3.2"
+    },
+    "require-dev" : {
+        "phpunit/phpunit" : "5.*",
+        "squizlabs/php_codesniffer": "^2.7"
+    }
+}
