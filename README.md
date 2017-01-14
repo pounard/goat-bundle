@@ -6,6 +6,7 @@ Experimental bundle for the [Goat database connector](https://github.com/pounard
 
  *  [postponed] entity generation
  *  [postponed] mapper generation
+ *  generated-hydrator cache handling
  *  converters configuration
  *  driver configuration
  *  profiler integration

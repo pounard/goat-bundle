@@ -11,6 +11,8 @@
             "email" : "pierre.rineau@processus.org"
         }
     ],
+    "minimum-stability" : "dev",
+    "prefer-stable" : true,
     "autoload" : {
         "exclude-from-classmap": ["/Tests/"],
         "psr-4" : {
