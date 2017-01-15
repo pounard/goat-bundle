@@ -70,7 +70,9 @@ information.
 
  *  [postponed] entity generation
  *  [postponed] mapper generation
+ *  [x] converters default configuration (extension)
  *  [x] driver configuration
- *  converters configuration
+ *  converters user configuration (compiler pass with tags)
+ *  generated-hydrator autoloader
  *  generated-hydrator cache handling
  *  profiler integration

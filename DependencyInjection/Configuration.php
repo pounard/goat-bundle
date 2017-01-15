@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->booleanNode('debug')->defaultFalse()->end()
                 ->arrayNode('connection')
                     ->children()
                         ->arrayNode('readwrite')
