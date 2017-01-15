@@ -1,0 +1,35 @@
+parameters:
+    goat.cache_dir: "%kerne.cache_dir%/goat"
+
+services:
+
+    goat.session:
+        class: Goat\Core\Client\Session
+        arguments: ["@goat.connection.readwrite", "@?goat.connection.readonly"]
+
+    goat.converter_map:
+        class: Goat\Core\Converter\ConverterMap
+        arguments: ["%goat.cache_dir%"]
+
+    goat.hydrator_map:
+        class: Goat\Core\Hydrator\HydratorMap
+
+    goat.converter.boolean:
+        class: Goat\Core\Converter\Impl\BooleanConverter
+        tags: [{name: goat.converter, priority: 0}]
+
+    goat.converter.decimal:
+        class: Goat\Core\Converter\Impl\DecimalConverter
+        tags: [{name: goat.converter, priority: 0}]
+
+    goat.converter.integer:
+        class: Goat\Core\Converter\Impl\IntegerConverter
+        tags: [{name: goat.converter, priority: 0}]
+
+    goat.converter.string:
+        class: Goat\Core\Converter\Impl\StringConverter
+        tags: [{name: goat.converter, priority: 0}]
+
+    goat.converter.timestamp:
+        class: Goat\Core\Converter\Impl\TimestampConverter
+        tags: [{name: goat.converter, priority: 0}]

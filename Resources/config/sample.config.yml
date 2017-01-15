@@ -1,0 +1,31 @@
+# Sample configuration for the Goat bundle
+goat:
+
+    # This debug option will attempt to set debug on most components
+    # it can, such as converters and hydrators
+    debug:              "%kernel.debug%"
+
+    # Connection information is mandator, this where you configure
+    # your database connections, you can have one or two database
+    # connections:
+    #   - the first and mandatory one is the read-write connection;
+    #   - the second and optional one if the read-only connection
+    #     if specified, all read-only queries will be routed to this
+    #     connection when not in a transaction.
+    connection:
+
+        # Read-write mandator connection: only the 'host' key is required
+        readwrite:
+            host:       "%database_host%"
+            user:       "%database_user%"
+            password:   "%database_password%"
+            charset:    UTF-8
+            debug:      "%kernel.debug%"
+
+        # Read-only optional connection: only the 'host' key is required
+        readonly:
+            host:       "%database_host%"
+            user:       "%database_user%"
+            password:   "%database_password%"
+            charset:    UTF-8
+            debug:      "%kernel.debug%"
