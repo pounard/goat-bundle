@@ -73,6 +73,9 @@ information.
  *  [x] converters default configuration (extension)
  *  [x] driver configuration
  *  converters user configuration (compiler pass with tags)
+ *  entity aliasing
+ *  entity configuration
  *  generated-hydrator autoloader
  *  generated-hydrator cache handling
  *  profiler integration
+ *  validation integration
