@@ -4,15 +4,15 @@ namespace Goat\Bundle\DependencyInjection;
 
 use Goat\Core\Client\ConnectionInterface;
 use Goat\Core\Client\Dsn;
+use Goat\Core\Converter\ConverterMap;
+use Goat\Core\DebuggableInterface;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Goat\Core\Converter\ConverterMap;
 use Symfony\Component\DependencyInjection\Reference;
-use Goat\Core\DebuggableInterface;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * The one and only Goat extension!
@@ -116,15 +116,14 @@ class GoatExtension extends Extension
      */
     private function activateDebugMode(ContainerBuilder $container)
     {
-        $components = [
+        $services = [
             'goat.converter_map',
             'goat.hydrator_map',
         ];
 
-        foreach ($components as $id) {
+        foreach ($services as $id) {
             $definition = $container->getDefinition($id);
-            $class = $definition->getClass();
-            if (is_subclass_of($class, DebuggableInterface::class)) {
+            if (is_subclass_of($definition->getClass(), DebuggableInterface::class)) {
                 $definition->addMethodCall('setDebug', [true]);
             }
         }

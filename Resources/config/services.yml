@@ -8,8 +8,10 @@ services:
         arguments: ["@goat.connection.readwrite", "@?goat.connection.readonly"]
 
     goat.converter_map:
+        public: false
         class: Goat\Core\Converter\ConverterMap
-        arguments: ["%goat.cache_dir%/hydrator"]
 
     goat.hydrator_map:
+        public: false
         class: Goat\Core\Hydrator\HydratorMap
+        arguments: ["%goat.cache_dir%/hydrator"]
