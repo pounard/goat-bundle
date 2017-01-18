@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 
 /**
  * The one and only Goat extension!
@@ -43,6 +44,10 @@ class GoatExtension extends Extension
         }
 
         $this->registerDefaultConverters($container);
+
+        if (in_array(WebProfilerBundle::class, $container->getParameter('kernel.bundles'))) {
+            $loader->load('profiler.yml');
+        }
     }
 
     /**

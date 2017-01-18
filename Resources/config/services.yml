@@ -3,15 +3,22 @@ parameters:
 
 services:
 
-    goat.session:
+    goat.session.default:
         class: Goat\Core\Client\Session
         arguments: ["@goat.connection.readwrite", "@?goat.connection.readonly"]
 
-    goat.converter_map:
+    goat.session.dispatcher:
         public: false
+        class: Goat\Core\EventDispatcher\EventEmitterConnectionProxy
+        decorates: goat.session.default
+        arguments: ["@goat.session.dispatcher.inner", "@event_dispatcher"]
+
+    goat.session:
+        alias: goat.session.default
+
+    goat.converter_map:
         class: Goat\Core\Converter\ConverterMap
 
     goat.hydrator_map:
-        public: false
         class: Goat\Core\Hydrator\HydratorMap
         arguments: ["%goat.cache_dir%/hydrator"]

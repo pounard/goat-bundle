@@ -1,0 +1,12 @@
+services:
+
+    goat.session.time:
+        public: false
+        class: Goat\Bundle\DataCollector\TimeConnectionProxy
+        decorates: goat.session
+        arguments: ["@goat.session.time.inner"]
+
+    goat.data_collector:
+        class: Goat\Bundle\DataCollector\ConnectionDataCollector
+        arguments: ["@goat.session.time", '@?debug.stopwatch']
+        tags: [{ name: data_collector, template: "@Goat/Profiler/goat.html.twig", id: goat_connection}]
