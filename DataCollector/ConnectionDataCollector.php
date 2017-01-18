@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Goat\Bundle\DataCollector;
 
+use Goat\Core\Profiling\ProfilingConnectionProxy;
+
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
 class ConnectionDataCollector extends DataCollector implements LateDataCollectorInterface
 {
     /**
-     * @var TimeConnectionProxy
+     * @var ProfilingConnectionProxy
      */
     private $session;
 
@@ -24,7 +26,7 @@ class ConnectionDataCollector extends DataCollector implements LateDataCollector
      *
      * @param TimeConnectionProxy $session
      */
-    public function __construct(TimeConnectionProxy $session)
+    public function __construct(ProfilingConnectionProxy $session)
     {
         $this->session = $session;
     }

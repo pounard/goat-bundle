@@ -7,12 +7,6 @@ services:
         class: Goat\Core\Client\Session
         arguments: ["@goat.connection.readwrite", "@?goat.connection.readonly"]
 
-    goat.session.dispatcher:
-        public: false
-        class: Goat\Core\EventDispatcher\EventEmitterConnectionProxy
-        decorates: goat.session.default
-        arguments: ["@goat.session.dispatcher.inner", "@event_dispatcher"]
-
     goat.session:
         alias: goat.session.default
 
