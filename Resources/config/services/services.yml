@@ -1,5 +1,7 @@
 parameters:
     goat.cache_dir: "%kernel.cache_dir%/goat"
+    goat.mapper.class_index: []
+    goat.mapper.service_index: []
 
 services:
 
@@ -16,3 +18,8 @@ services:
     goat.hydrator_map:
         class: Goat\Core\Hydrator\HydratorMap
         arguments: ["%goat.cache_dir%/hydrator"]
+
+    goat.mapper_registry:
+        public: true
+        class: Goat\Bundle\Mapper\MapperRegistry
+        arguments: ['@service_container', '%goat.mapper.service_index%', '%goat.mapper.class_index%']

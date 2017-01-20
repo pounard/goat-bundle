@@ -68,14 +68,19 @@ information.
 
 # Todo
 
+ *  [pending] entity configuration via configuration
+ *  [pending] profiler integration
  *  [postponed] entity generation
- *  [postponed] mapper generation
+ *  [postponed] mapper generation via configuration
  *  [x] converters default configuration (extension)
  *  [x] driver configuration
- *  converters user configuration (compiler pass with tags)
- *  entity aliasing
- *  entity configuration
+ *  [x] entity aliasing via configuration
+ *  [x] mapper registration via compiler pass with tags
+ *  [x] mapper registry
+ *  controller trait
+ *  converters user configuration via compiler pass with tags
+ *  entity configuration via annotation
  *  generated-hydrator autoloader
  *  generated-hydrator cache handling
- *  profiler integration
+ *  mapper registration via annotations
  *  validation integration

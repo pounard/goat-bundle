@@ -2,6 +2,8 @@
 
 namespace Goat\Bundle;
 
+use Goat\Bundle\DependencyInjection\Compiler\RegisterMapperCompilerPass;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -15,5 +17,6 @@ class GoatBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new RegisterMapperCompilerPass());
     }
 }

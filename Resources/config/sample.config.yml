@@ -29,3 +29,63 @@ goat:
             password:   "%database_password%"
             charset:    UTF-8
             debug:      "%kernel.debug%"
+
+    # Mapper configuration, keys are bundle names; you may omit the "Bundle"
+    # suffix, which means that for the "AppBundle" for exemple, you could
+    # write both names:
+    #
+    #   - 'AppBundle'
+    #   - 'App'
+    #
+    # Whatever you write here will become the mapper identifier's namespace
+    # part, as long as you don't set the 'namespace' configuration key.
+    #
+    # You can set as many bundle configuration as you with from here.
+    mapper:
+
+        AppBundle:
+
+            # This tells the bundle how to find mappers definitions for usage
+            # with the mapper registry. It can be a single string value or an
+            # array of values, where values can be:
+            #
+            #   - annotation: find mappers using class annotation
+            #
+            provider: annotation
+
+            # Directory is always required; for configuration driven
+            # registration it will define in which folder to lookup for the
+            # configuration files, for annotation it must be a path where
+            # classes lives.
+            #
+            # This directory must be relative to the bundle class folder. It can
+            # also be an array, each value being a directory relative to the
+            # bundle class folder.
+            #
+            # For example, let's use the AppBundle\AppBundle\Entity\User class
+            # and associated mapper, if nothing is driven, the mapper identifier
+            # will become:
+            #
+            #   - 'AppBundle:User'
+            #
+            # If you have sub directories, they will be parsed as well, each
+            # folder will become a '/' separator, thus if you have the following
+            # class: AppBundle\AppBundle\Entity\Core\User then the mapper
+            # identifier will become:
+            #
+            #   - 'AppBundle:Core/User'
+            #
+            directory: Entity
+
+            # This changes the mapper namespace, instead of being registered
+            # under "AppBundle" it will be registered under the given name here
+            # instead, which means that our AppBundle\AppBundle\Entity\User
+            # class mapper identifier will become:
+            #
+            #   - 'Miaw:User'
+            #
+            # And the AppBundle\AppBundle\Entity\Core\User will become:
+            #
+            #   - 'Miaw:Core/User'
+            #
+            namespace: Miaw

@@ -6,6 +6,7 @@ use Goat\Core\Client\ConnectionInterface;
 use Goat\Core\Client\Dsn;
 use Goat\Core\Converter\ConverterMap;
 use Goat\Core\DebuggableInterface;
+use Goat\Core\Error\NotImplementedError;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +14,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * The one and only Goat extension!
@@ -28,7 +29,7 @@ class GoatExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/services'));
         $loader->load('services.yml');
 
         $this->createConnectionDefinition($container, 'readwrite', $config['connection']['readwrite']);
@@ -45,7 +46,27 @@ class GoatExtension extends Extension
 
         $this->registerDefaultConverters($container);
 
-        if (in_array(WebProfilerBundle::class, $container->getParameter('kernel.bundles'))) {
+        if (!empty($config['mapping'])) {
+            $bundles = $container->getParameter('kernel.bundles');
+            foreach ($config['mapping'] as $bundle => $options) {
+                // Be nice with the user, allow us to give the bundle name with
+                // or without the 'Bundle' suffix. I struggled myself for too
+                // long with bundle name normalization because no one ever
+                // agrees on which to use. Just accept everything!
+                if ('Bundle' !== substr($bundle, -6)) {
+                    $realBundle = $bundle . 'Bundle';
+                } else {
+                    $realBundle = $bundle;
+                }
+                if (!isset($bundles[$realBundle])) {
+                    throw new InvalidConfigurationException(sprintf('The bundle "%s" does not exist in kernel for path "goat.mapping.%s"', $realBundle, $bundle));
+                }
+
+                $this->registerMappingForBundle($container, $bundle, $options);
+            }
+        }
+
+        if (in_array('Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle', $container->getParameter('kernel.bundles'))) {
             $loader->load('profiler.yml');
         }
     }
@@ -112,6 +133,38 @@ class GoatExtension extends Extension
         }
 
         $container->addDefinitions(['goat.connection.' . $name => $definition]);
+    }
+
+    /**
+     * Create bundle mappers using annotations
+     *
+     * @param ContainerBuilder $container
+     * @param string $bundle
+     * @param array $options
+     */
+    private function registerMappingsForBundleAsAnnotations(ContainerBuilder $container, string $bundle, array $options)
+    {
+        // throw new NotImplementedError();
+    }
+
+    /**
+     * Create bundle mappers
+     *
+     * @param ContainerBuilder $container
+     * @param string $bundle
+     * @param array $options
+     */
+    private function registerMappingForBundle(ContainerBuilder $container, string $bundle, array $options)
+    {
+        switch ($options['type']) {
+
+            case 'annotation':
+                $this->registerMappingsForBundleAsAnnotations($container, $bundle, $options);
+                break;
+
+            default:
+                throw new InvalidConfigurationException(sprintf('The type "%s" is not implemented for path "goat.mapping.%s.type"', $bundle));
+        }
     }
 
     /**
