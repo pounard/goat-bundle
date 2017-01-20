@@ -72,12 +72,12 @@ information.
  *  [pending] profiler integration
  *  [postponed] entity generation
  *  [postponed] mapper generation via configuration
+ *  [x] controller trait
  *  [x] converters default configuration (extension)
  *  [x] driver configuration
  *  [x] entity aliasing via configuration
  *  [x] mapper registration via compiler pass with tags
  *  [x] mapper registry
- *  controller trait
  *  converters user configuration via compiler pass with tags
  *  entity configuration via annotation
  *  generated-hydrator autoloader
