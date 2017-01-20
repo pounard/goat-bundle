@@ -45,7 +45,7 @@ class UpdaterRunSingleCommand extends ContainerAwareCommand
         }
         $version = (int)$version;
 
-        $installer->runSingleUpdate($className, $version);
+        $installer->runSingleUpdate($className, $version, false);
 
         $output->writeln('<info>' . sprintf("Update %s, %d has run", $className, $version) . '</info>');
     }

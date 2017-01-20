@@ -51,11 +51,11 @@ class UpdaterListCommand extends ContainerAwareCommand
             list($currentVersion, $missingCount) = $status;
 
             if (InstallManager::SCHEMA_UNINSTALLED === $currentVersion) {
-                $statusText = "<warning>not installed<warning>";
+                $statusText = "not installed";
             } else if ($missingCount) {
-                $statusText = "<warning>updates pending<warning>";
+                $statusText = "updates pending";
             } else {
-                $statusText = "<info>up to date</info>";
+                $statusText = "up to date";
             }
 
             $table->addRow([$name, $statusText, $currentVersion, $missingCount]);

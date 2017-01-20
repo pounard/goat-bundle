@@ -49,7 +49,7 @@ class UpdaterRunCommand extends ContainerAwareCommand
                     $output->writeln(sprintf('Running %s, %d - %s', $name, $version, $description));
 
                     // @todo reentrency and schema save
-                    $installer->runSingleUpdate($name, $version);
+                    $installer->runSingleUpdate($name, $version, true);
                 }
             }
         }

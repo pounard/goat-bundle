@@ -88,7 +88,7 @@ class InstallManager
             try {
                 $this->connection->query("select 1 from goat_schema");
             } catch (GoatError $e) {
-                $this->selfUpdater->installSchema($this->connection);
+                $this->doRunInstall($this->selfUpdater);
             }
 
             $this->selfSchemaChecked = true;
@@ -143,18 +143,41 @@ class InstallManager
     }
 
     /**
-     * Run update
+     * Update version number in database
      *
      * @param Updater $updater
      * @param int $version
      */
-    private function doRunUpdate(Updater $updater, int $version)
+    private function updateVersionNumber(Updater $updater, int $version)
+    {
+        $name = get_class($updater);
+
+        // @todo need a merge query here
+        if (!$this->connection->query("select 1 from goat_schema where name = $*", [$name])->fetchField()) {
+            $this->connection->query("insert into goat_schema (version, name) values ($*, $*)", [$version, $name]);
+        } else {
+            $this->connection->query("update goat_schema set version = $* where name = $*", [$version, $name]);
+        }
+    }
+
+    /**
+     * Run update
+     *
+     * @param Updater $updater
+     * @param int $version
+     * @param bool $save
+     */
+    private function doRunUpdate(Updater $updater, int $version, bool $save = true)
     {
         $transaction = $this->connection->startTransaction(Transaction::SERIALIZABLE);
         $transaction->start();
 
         try {
             call_user_func($updater->getUpdateCallback($version), $this->connection, $transaction);
+
+            if ($save) {
+                $this->updateVersionNumber($updater, $version);
+            }
 
             $transaction->commit();
 
@@ -179,6 +202,7 @@ class InstallManager
             $updater->preInstallSchema($this->connection, $transaction);
             $updater->installSchema($this->connection, $transaction);
             $updater->postInstallSchema($this->connection, $transaction);
+            $this->updateVersionNumber($updater, 0);
 
             $transaction->commit();
 
@@ -280,10 +304,11 @@ class InstallManager
      *
      * @param string $className
      * @param int $version
+     * @param bool $save
      */
-    public function runSingleUpdate(string $className, int $version)
+    public function runSingleUpdate(string $className, int $version, bool $save = true)
     {
-        $this->doRunUpdate($this->getUpdater($className), $version);
+        $this->doRunUpdate($this->getUpdater($className), $version, $save);
     }
 
     /**
