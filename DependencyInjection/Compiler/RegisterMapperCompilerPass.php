@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Goat\Bundle\DependencyInjection\Compiler;
 
 use Goat\Mapper\MapperInterface;

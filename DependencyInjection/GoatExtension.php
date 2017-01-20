@@ -6,7 +6,6 @@ use Goat\Core\Client\ConnectionInterface;
 use Goat\Core\Client\Dsn;
 use Goat\Core\Converter\ConverterMap;
 use Goat\Core\DebuggableInterface;
-use Goat\Core\Error\NotImplementedError;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

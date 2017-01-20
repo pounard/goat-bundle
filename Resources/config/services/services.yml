@@ -23,3 +23,11 @@ services:
         public: true
         class: Goat\Bundle\Mapper\MapperRegistry
         arguments: ['@service_container', '%goat.mapper.service_index%', '%goat.mapper.class_index%']
+
+    goat.installer:
+        class: Goat\Bundle\Installer\InstallManager
+        arguments: ['@goat.session', '@service_container', '@event_dispatcher', [], []]
+
+    goat.installer.self_updater:
+        class: Goat\Bundle\Installer\SelfUpdater
+        tags: [{name: goat.updater}]
