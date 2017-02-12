@@ -18,14 +18,7 @@
     {% endset %}
 
     {% set text %}
-        {# }
-        <div class="sf-toolbar-info-piece">
-            <b>Queries</b>
-            <span>{{ data.query_count }}</span>
-        </div>
-         #}
-
-        {% for name, count in data %}
+        {% for name, count in data if name != 'queries' %}
             <div class="sf-toolbar-info-piece">
                 <b>{{ name }}</b>
                 {% if 'time' in name %}

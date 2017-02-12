@@ -50,6 +50,18 @@ class ConnectionDataCollector extends DataCollector implements LateDataCollector
     }
 
     /**
+     * Get executed queries raw SQL
+     *
+     * @return array
+     *   Array of arrays, whose each values are respectively the raw SQL query
+     *   and the parameters array of ArgumentBag instance
+     */
+    public function getQueries() : array
+    {
+        return $this->data['queries'] ?? [];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function lateCollect()
