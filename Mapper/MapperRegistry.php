@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Goat\Bundle\Mapper;
 
 use Goat\Mapper\MapperInterface;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -55,7 +54,7 @@ final class MapperRegistry
      * @param string $name
      *   Either a mapper name
      *
-     * @throws MapperFoundError
+     * @throws MapperNotFoundError
      *   If the mapper does not exists
      *
      * @return MapperInterface

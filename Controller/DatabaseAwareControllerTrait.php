@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Goat\Bundle\Controller;
 
+use Goat\Bundle\Mapper\MapperNotFoundError;
 use Goat\Core\Client\ConnectionInterface;
 use Goat\Mapper\MapperInterface;
 
@@ -27,7 +28,7 @@ trait DatabaseAwareControllerTrait
      * @param string $name
      *   Either a mapper name
      *
-     * @throws MapperFoundError
+     * @throws MapperNotFoundError
      *   If the mapper does not exists
      *
      * @return MapperInterface
