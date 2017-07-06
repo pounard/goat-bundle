@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Goat\Mapper\Error;
 
-use Goat\Core\Error\GoatError;
+use Goat\Error\GoatError;
 
 /**
  * One or more entities could not be found in the database

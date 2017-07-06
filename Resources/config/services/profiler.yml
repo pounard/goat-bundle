@@ -2,7 +2,7 @@ services:
 
     goat.session.profiling:
         public: false
-        class: Goat\Core\Profiling\ProfilingConnectionProxy
+        class: Goat\Driver\Profiling\ProfilingDriverProxy
         decorates: goat.session
         arguments: ["@goat.session.profiling.inner"]
 

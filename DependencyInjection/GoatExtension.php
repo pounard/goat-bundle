@@ -2,18 +2,19 @@
 
 namespace Goat\Bundle\DependencyInjection;
 
-use Goat\Core\Client\ConnectionInterface;
-use Goat\Core\Client\Dsn;
-use Goat\Core\Converter\ConverterMap;
-use Goat\Core\DebuggableInterface;
-
+use Goat\Converter\ConverterMap;
+use Goat\Driver\Dsn;
+use Goat\Driver\PDO\PDOMySQLConnection;
+use Goat\Driver\PDO\PDOPgSQLConnection;
+use Goat\Driver\PgSQL\ExtPgSQLConnection;
+use Goat\Runner\RunnerInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * The one and only Goat extension!
@@ -90,22 +91,22 @@ class GoatExtension extends Extension
             if (!class_exists($driverClass)) {
                 throw new \LogicException("Class '%s' for connection '%s' does not exist'", $driverClass, $name);
             }
-            if (!is_subclass_of($driverClass, ConnectionInterface::class)) {
-                throw new \LogicException("Class '%s' for connection '%s' does not implements '%s'", $driverClass, $name, ConnectionInterface::class);
+            if (!is_subclass_of($driverClass, RunnerInterface::class)) {
+                throw new \LogicException("Class '%s' for connection '%s' does not implements '%s'", $driverClass, $name, RunnerInterface::class);
             }
         } else {
             switch ($dsn->getDriver()) {
 
                 case 'ext_pgsql':
-                    $driverClass = \Goat\Driver\PgSQL\PgSQLConnection::class;
+                    $driverClass = ExtPgSQLConnection::class;
                     break;
 
                 case 'pdo_mysql':
-                    $driverClass = \Goat\Driver\PDO\MySQLConnection::class;
+                    $driverClass = PDOMySQLConnection::class;
                     break;
 
                 case 'pdo_pgsql':
-                    $driverClass = \Goat\Driver\PDO\PgSQLConnection::class;
+                    $driverClass = PDOPgSQLConnection::class;
                     break;
             }
         }
@@ -173,17 +174,7 @@ class GoatExtension extends Extension
      */
     private function activateDebugMode(ContainerBuilder $container)
     {
-        $services = [
-            'goat.converter_map',
-            'goat.hydrator_map',
-        ];
-
-        foreach ($services as $id) {
-            $definition = $container->getDefinition($id);
-            if (is_subclass_of($definition->getClass(), DebuggableInterface::class)) {
-                $definition->addMethodCall('setDebug', [true]);
-            }
-        }
+        // throw new NotImplementedError();
     }
 
     /**

@@ -6,17 +6,17 @@ parameters:
 services:
 
     goat.session.default:
-        class: Goat\Core\Client\Session
+        class: Goat\Driver\Session
         arguments: ["@goat.connection.readwrite", "@?goat.connection.readonly"]
 
     goat.session:
         alias: goat.session.default
 
     goat.converter_map:
-        class: Goat\Core\Converter\ConverterMap
+        class: Goat\Converter\ConverterMap
 
     goat.hydrator_map:
-        class: Goat\Core\Hydrator\HydratorMap
+        class: Goat\Hydrator\HydratorMap
         arguments: ["%goat.cache_dir%/hydrator"]
 
     goat.mapper_registry:

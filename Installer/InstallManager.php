@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Goat\Bundle\Installer;
 
-use Goat\Core\Client\ConnectionInterface;
-use Goat\Core\Error\GoatError;
-use Goat\Core\Error\NotImplementedError;
-use Goat\Core\Transaction\Transaction;
-
+use Goat\Error\GoatError;
+use Goat\Error\NotImplementedError;
+use Goat\Runner\RunnerInterface;
+use Goat\Runner\Transaction;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -23,9 +21,9 @@ class InstallManager
     const SCHEMA_UNINSTALLED = -1;
 
     /**
-     * @var ConnectionInterface
+     * @var RunnerInterface
      */
-    private $connection;
+    private $runner;
 
     /**
      * @var ContainerInterface
@@ -60,18 +58,18 @@ class InstallManager
     /**
      * Default constructor
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param ContainerInterface $container
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        ConnectionInterface $connection,
+        RunnerInterface $runner,
         ContainerInterface $container,
         EventDispatcherInterface $eventDispatcher,
         array $updaterIndex,
         array $classIndex
     ) {
-        $this->connection = $connection;
+        $this->runner = $runner;
         $this->container = $container;
         $this->eventDispatcher = $eventDispatcher;
         $this->updaterIndex = $updaterIndex;
@@ -86,7 +84,7 @@ class InstallManager
     {
         if (!$this->selfSchemaChecked) {
             try {
-                $this->connection->query("select 1 from goat_schema");
+                $this->runner->query("select 1 from goat_schema");
             } catch (GoatError $e) {
                 $this->doRunInstall($this->selfUpdater);
             }
@@ -153,10 +151,10 @@ class InstallManager
         $name = get_class($updater);
 
         // @todo need a merge query here
-        if (!$this->connection->query("select 1 from goat_schema where name = $*", [$name])->fetchField()) {
-            $this->connection->query("insert into goat_schema (version, name) values ($*, $*)", [$version, $name]);
+        if (!$this->runner->query("select 1 from goat_schema where name = $*", [$name])->fetchField()) {
+            $this->runner->query("insert into goat_schema (version, name) values ($*, $*)", [$version, $name]);
         } else {
-            $this->connection->query("update goat_schema set version = $* where name = $*", [$version, $name]);
+            $this->runner->query("update goat_schema set version = $* where name = $*", [$version, $name]);
         }
     }
 
@@ -169,11 +167,10 @@ class InstallManager
      */
     private function doRunUpdate(Updater $updater, int $version, bool $save = true)
     {
-        $transaction = $this->connection->startTransaction(Transaction::SERIALIZABLE);
-        $transaction->start();
+        $transaction = $this->runner->startTransaction(Transaction::SERIALIZABLE);
 
         try {
-            call_user_func($updater->getUpdateCallback($version), $this->connection, $transaction);
+            call_user_func($updater->getUpdateCallback($version), $this->runner, $transaction);
 
             if ($save) {
                 $this->updateVersionNumber($updater, $version);
@@ -195,13 +192,13 @@ class InstallManager
      */
     private function doRunInstall(Updater $updater)
     {
-        $transaction = $this->connection->startTransaction(Transaction::SERIALIZABLE);
+        $transaction = $this->runner->startTransaction(Transaction::SERIALIZABLE);
         $transaction->start();
 
         try {
-            $updater->preInstallSchema($this->connection, $transaction);
-            $updater->installSchema($this->connection, $transaction);
-            $updater->postInstallSchema($this->connection, $transaction);
+            $updater->preInstallSchema($this->runner, $transaction);
+            $updater->installSchema($this->runner, $transaction);
+            $updater->postInstallSchema($this->runner, $transaction);
             $this->updateVersionNumber($updater, 0);
 
             $transaction->commit();
@@ -243,7 +240,7 @@ class InstallManager
         foreach ($this->getAllUpdaters() as $updater) {
 
             $name = get_class($updater);
-            $currentVersion = $this->connection->query("select version from goat_schema where name = $*", [$name])->fetchField();
+            $currentVersion = $this->runner->query("select version from goat_schema where name = $*", [$name])->fetchField();
 
             if (null === $currentVersion) {
                 $currentVersion = self::SCHEMA_UNINSTALLED;
@@ -281,7 +278,7 @@ class InstallManager
         foreach ($this->getAllUpdaters() as $updater) {
 
             $name = get_class($updater);
-            $currentVersion = $this->connection->query("select version from goat_schema where name = $*", [$name])->fetchField();
+            $currentVersion = $this->runner->query("select version from goat_schema where name = $*", [$name])->fetchField();
 
             if (null === $currentVersion) {
                 $currentVersion = self::SCHEMA_UNINSTALLED;

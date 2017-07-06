@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Goat\Bundle\Installer;
 
-use Goat\Core\Client\ConnectionInterface;
-use Goat\Core\Error\DriverError;
-use Goat\Core\Transaction\Transaction;
+use Goat\Runner\RunnerInterface;
+use Goat\Runner\Transaction;
+use Goat\Error\DriverError;
 
 /**
  * Self installer.
@@ -16,11 +16,11 @@ class SelfUpdater extends Updater
     /**
      * {@inheritdoc}
      */
-    public function installSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function installSchema(RunnerInterface $runner, Transaction $transaction)
     {
         // Very specific use case, you never should do this
         try {
-            $connection->query("create table goat_schema(name varchar(255) unique not null, version integer not null default -1)");
+            $runner->query("create table goat_schema(name varchar(255) unique not null, version integer not null default -1)");
         } catch (DriverError $e) {
             // Table has already been implicitely installed by the
             // ManagerInstaller that needs to have to compare versions.
@@ -30,7 +30,7 @@ class SelfUpdater extends Updater
     /**
      * The very first update that will ever be run.
      */
-    public function update1(ConnectionInterface $connection, Transaction $transaction)
+    public function update1(RunnerInterface $runner, Transaction $transaction)
     {
     }
 
@@ -42,7 +42,7 @@ class SelfUpdater extends Updater
      *
      * Use me as an example class to write your updates!
      */
-    public function update2(ConnectionInterface $connection, Transaction $transaction)
+    public function update2(RunnerInterface $runner, Transaction $transaction)
     {
     }
 }

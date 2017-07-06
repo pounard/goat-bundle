@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Goat\Bundle\Installer;
 
-use Goat\Core\Client\ConnectionInterface;
-use Goat\Core\Transaction\Transaction;
+use Goat\Runner\RunnerInterface;
+use Goat\Runner\Transaction;
 
 /**
  * Base implementation for updates
@@ -33,60 +33,60 @@ class Updater
     /**
      * This is run before schema is installed
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param Transaction $transaction
      */
-    public function preInstallSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function preInstallSchema(RunnerInterface $runner, Transaction $transaction)
     {
     }
 
     /**
      * Install schema
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param Transaction $transaction
      */
-    public function installSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function installSchema(RunnerInterface $runner, Transaction $transaction)
     {
     }
 
     /**
      * This is run after schema is installed
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param Transaction $transaction
      */
-    public function postInstallSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function postInstallSchema(RunnerInterface $runner, Transaction $transaction)
     {
     }
 
     /**
      * This is run before schema is uninstalled
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param Transaction $transaction
      */
-    public function preUninstallSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function preUninstallSchema(RunnerInterface $runner, Transaction $transaction)
     {
     }
 
     /**
      * Uninstall schema
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param Transaction $transaction
      */
-    public function uninstallSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function uninstallSchema(RunnerInterface $runner, Transaction $transaction)
     {
     }
 
     /**
      * This is run after the schema is uninstalled
      *
-     * @param ConnectionInterface $connection
+     * @param RunnerInterface $runner
      * @param Transaction $transaction
      */
-    public function postUninstallSchema(ConnectionInterface $connection, Transaction $transaction)
+    public function postUninstallSchema(RunnerInterface $runner, Transaction $transaction)
     {
     }
 

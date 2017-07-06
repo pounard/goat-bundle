@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Goat\Bundle\Command;
 
 use Goat\Bundle\Installer\InstallManager;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Goat\Bundle\Controller;
 
 use Goat\Bundle\Mapper\MapperNotFoundError;
-use Goat\Core\Client\ConnectionInterface;
 use Goat\Mapper\MapperInterface;
+use Goat\Runner\RunnerInterface;
 
 /**
  * Provide a set of helpers for manipulating database from controllers
@@ -41,9 +41,9 @@ trait DatabaseAwareControllerTrait
     /**
      * Get database connection
      *
-     * @return ConnectionInterface
+     * @return RunnerInterface
      */
-    protected function getDatabase() : ConnectionInterface
+    protected function getDatabase() : RunnerInterface
     {
         return $this->get('goat.session');
     }
