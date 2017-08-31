@@ -15,7 +15,7 @@ final class MapperRegistry
     /**
      * Default/none namespace
      */
-    const NAMESPACE_DEFAULT = 'default';
+    const NAMESPACE_DEFAULT = 'Default';
 
     /**
      * Service container
@@ -49,6 +49,18 @@ final class MapperRegistry
     }
 
     /**
+     * Is entity class supported
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    public function isEntityClassSupported(string $className) : bool
+    {
+        return isset($this->classIndex[$className]);
+    }
+
+    /**
      * Find mapper
      *
      * @param string $name
@@ -77,11 +89,12 @@ final class MapperRegistry
             if (strrpos($name, ':') !== $pos) {
                 throw new MapperNotFoundError(sprintf("invalid name, must be of the form 'NAMESPACE:ENTITY' or 'ENTITY': '%s' given", $name));
             }
+            $serviceId = $name;
         } else {
-            $name = sprintf("%s:%s", self::NAMESPACE_DEFAULT, $name);
+            $serviceId = sprintf("%s:%s", self::NAMESPACE_DEFAULT, $name);
         }
 
-        $serviceId = $this->serviceIndex[$name] ?? $this->classIndex[$name] ?? null;
+        $serviceId = $this->serviceIndex[$serviceId] ?? $this->classIndex[$name] ?? null;
 
         if (!$serviceId) {
             throw new MapperNotFoundError(sprintf("mapper does not exists: '%s'", $name));
