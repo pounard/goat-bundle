@@ -1,8 +1,16 @@
 goat:
     runner:
-        driver: doctrine
-        metadata_cache: apcu
-        metadata_cache_prefix: "app_%kernel.environment%"
+        default:
+              doctrine_connection: default
+              driver: doctrine
+              metadata_cache: apcu
+              metadata_cache_prefix: "%goat.runner.metadata_cache_prefix%"
+        logging:
+              autocommit: true
+              doctrine_connection: another_connnection
+              driver: doctrine
+              metadata_cache: apcu
+              metadata_cache_prefix: "%goat.runner.metadata_cache_prefix%"
     query:
         enabled: true
     domain:
