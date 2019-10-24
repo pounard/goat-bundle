@@ -1,5 +1,9 @@
 services:
 
+    # Required for goat-domain, expose the handlers locator.
+    Symfony\Component\Messenger\Handler\HandlersLocatorInterface:
+        alias: messenger.bus.app.messenger.handlers_locator
+
     Goat\Bridge\Symfony\Messenger\Transport\PgSQLTransportFactory:
         public: false
         arguments: ["@goat.runner.default", "@?messenger.transport.serializer", "%kernel.debug%", "%kernel.environment%"]
