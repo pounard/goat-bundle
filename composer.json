@@ -23,6 +23,11 @@
             "Goat\\Bridge\\Symfony\\Tests\\": "tests/"
         }
     },
+    "abandoned": "makinacorpus/goat",
+    "conflict": {
+        "makinacorpus/generated-hydrator-bundle": "*",
+        "makinacorpus/goat": "*"
+    },
     "require" : {
         "makinacorpus/goat-query": "^1.0.0-alpha8",
         "php" : ">=7.2"
